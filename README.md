@@ -1,4 +1,4 @@
-# ⚡ BioPulse: CBG Capital Planning & Operational Unit Economics Platform
+# CBG Capital Planning & Operational Unit Economics Platform
 
 > **Production-grade analytics platform modelling a 3.0 TPD Compressed Bio-Gas (CBG) industrial facility — bridging greenfield corporate finance/debt modelling with manufacturing operations and Root Cause Analysis (RCA).**
 ---
