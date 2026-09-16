@@ -1,7 +1,6 @@
 -- =============================================================================
--- BioPulse: CBG Capital Planning & Operational Unit Economics Platform
+-- CBG Plant Operations & Capital Planning Dashboard Tool
 -- FILE: schema.sql
--- AUTHOR: Narmada Biofuels Pvt. Ltd. Analytics Engineering
 -- PURPOSE: 3NF Relational Schema for a 3.0 TPD CBG Industrial Facility
 -- DATABASE: SQLite3 / PostgreSQL compatible DDL
 -- =============================================================================

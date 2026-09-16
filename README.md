@@ -1,4 +1,4 @@
-# BioPulse: Clean Energy Capital Planning & Operational Analytics Dashboard Tool
+# CBG Plant Operations & Capital Planning Dashboard Tool
 
 > **A production-grade operational intelligence and quantitative financial modeling dashboard tool for a 3.0 TPD Compressed Bio-Gas (CBG) industrial facility — integrating capital expenditure (CAPEX) tracking, debt service solvency monitoring (DSCR), supply-chain unit economics, and automated operational Root Cause Analysis (RCA).**
 
@@ -6,13 +6,13 @@
 
 ## 📌 Executive Overview
 
-**BioPulse** is an industrial analytics platform designed to bridge the gap between corporate infrastructure finance and daily chemical process operations. 
+This platform is an industrial analytics dashboard tool designed to bridge the gap between corporate infrastructure finance and daily chemical process operations. 
 
 Modern bio-energy projects often face a disconnect between:
 1. **Capital Solvency & Debt Covenants**: Lenders require rigid Debt Service Coverage Ratios (DSCR $\ge$ 1.25x) and liquidity buffers.
 2. **Manufacturing & Feedstock Dynamics**: Agricultural feedstock pricing, moisture dilution, storage aging, and mechanical compressor downtime directly drive daily operational cash flows.
 
-BioPulse provides an interactive, executive-facing intelligence suite that unifies relational transactional data, physical mass-balance stoichiometry, and cash-basis treasury modeling into an actionable dark-mode dashboard.
+The dashboard tool provides an interactive, executive-facing intelligence suite that unifies relational transactional data, physical mass-balance stoichiometry, and cash-basis treasury modeling into an actionable dark-mode interface.
 
 ---
 
@@ -20,7 +20,7 @@ BioPulse provides an interactive, executive-facing intelligence suite that unifi
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    BioPulse Analytics Platform                      │
+│          CBG Plant Operations & Capital Planning Dashboard          │
 │            Commercial 3.0 TPD Compressed Bio-Gas Facility           │
 └─────────────────────────────────────────────────────────────────────┘
                                 │
@@ -40,7 +40,7 @@ BioPulse provides an interactive, executive-facing intelligence suite that unifi
          └──────────────┬──────┘                     │
                         ▼                            │
               ┌───────────────────┐                  │
-              │  biopulse_cbg.db  │◀─────────────────┘
+              │   cbg_plant.db    │◀─────────────────┘
               │   (SQLite3 Engine)│
               └────────┬──────────┘
                        │
@@ -80,7 +80,7 @@ NBPL-dashboard/
 ├── analytics_queries.sql   # Analytical SQL suite — CTEs, window functions, and RCA priority waterfall
 ├── db_engine.py            # SQLAlchemy query execution and business logic layer
 ├── app.py                  # Interactive Streamlit dashboard (dark theme, 2 views, 6+ Plotly charts)
-├── biopulse_cbg.db         # Pre-seeded SQLite database ready for immediate deployment
+├── cbg_plant.db            # Pre-seeded SQLite database ready for immediate deployment
 ├── requirements.txt        # Python package dependencies
 ├── .gitignore              # Repository hygiene configuration
 └── README.md               # System documentation and architectural specifications
@@ -353,4 +353,4 @@ The dataset incorporates three realistic operational anomaly clusters to stress-
 
 ---
 
-*BioPulse CBG Operations & Capital Planning Dashboard Tool — Industrial Analytics & Data Engineering Reference Architecture.*
+*CBG Operations & Capital Planning Dashboard Tool — Industrial Analytics & Data Engineering Reference Architecture.*

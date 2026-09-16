@@ -1,4 +1,4 @@
-# BioPulse CBG Analytics Platform — Python Dependencies
+# CBG Operations & Capital Planning Dashboard Tool — Python Dependencies
 # Python >= 3.10 required
 
 # Core data stack

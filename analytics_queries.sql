@@ -1,7 +1,6 @@
 -- =============================================================================
--- BioPulse: CBG Capital Planning & Operational Unit Economics Platform
+-- CBG Plant Operations & Capital Planning Dashboard Tool
 -- FILE: analytics_queries.sql
--- AUTHOR: Analytics Engineering — Narmada Biofuels Pvt. Ltd.
 -- PURPOSE: Production-grade SQL analytics engine.
 --          4 modular query blocks:
 --            Q1. CAPEX S-Curve & Burn Rate Variance

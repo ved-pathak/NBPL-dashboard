@@ -1,6 +1,6 @@
 """
 =============================================================================
-BioPulse: CBG Capital Planning & Operational Unit Economics Platform
+CBG Plant Operations & Capital Planning Dashboard Tool
 FILE: db_engine.py
 PURPOSE: SQLAlchemy/SQLite engine wrapper and query execution utilities.
          Provides modular functions returning Pandas DataFrames for each
@@ -21,7 +21,7 @@ from sqlalchemy.engine import Engine
 # ---------------------------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------------------------
-DB_PATH        = Path(__file__).parent / "biopulse_cbg.db"
+DB_PATH        = Path(__file__).parent / "cbg_plant.db"
 ANALYTICS_SQL  = Path(__file__).parent / "analytics_queries.sql"
 
 # Minimum Debt Service Reserve (INR) — red-line for liquidity charts
@@ -35,7 +35,7 @@ CBG_TARGET_KG   = 3000.0
 
 def get_engine() -> Engine:
     """
-    Return a SQLAlchemy engine connected to the BioPulse SQLite database.
+    Return a SQLAlchemy engine connected to the SQLite database.
     Raises a RuntimeError if the database has not been seeded yet.
     """
     if not DB_PATH.exists():
@@ -650,7 +650,7 @@ def get_kpi_summary(engine: Optional[Engine] = None) -> dict:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    print("BioPulse DB Engine — Health Check")
+    print("CBG DB Engine — Health Check")
     print("=" * 45)
     try:
         eng = get_engine()

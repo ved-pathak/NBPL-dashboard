@@ -1,8 +1,7 @@
 """
 =============================================================================
-BioPulse: CBG Capital Planning & Operational Unit Economics Platform
+CBG Plant Operations & Capital Planning Dashboard Tool
 FILE: generate_data.py
-AUTHOR: Analytics Engineering — Narmada Biofuels Pvt. Ltd.
 PURPOSE: Synthetic data seeder for a 3.0 TPD CBG industrial facility.
          Generates 12-month CAPEX construction data + 180-day operations data
          with 3 injected anomaly clusters for RCA modeling.
@@ -33,7 +32,7 @@ import pandas as pd
 # ---------------------------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------------------------
-DB_PATH          = "biopulse_cbg.db"
+DB_PATH          = "cbg_plant.db"
 SCHEMA_PATH      = "schema.sql"
 RANDOM_SEED      = 42
 OPS_START_DATE   = date(2024, 1, 1)   # Day 1 of operations (after construction)
@@ -764,7 +763,7 @@ def generate_cash_treasury(conn: sqlite3.Connection) -> None:
 def main():
     """Run the full data generation pipeline."""
     print("=" * 65)
-    print(" BioPulse CBG Data Generator — Narmada Biofuels Pvt. Ltd.")
+    print(" CBG Plant Data Generator — Commercial 3.0 TPD Facility")
     print(" Seeding 3.0 TPD CBG facility analytics database")
     print("=" * 65)
     print()

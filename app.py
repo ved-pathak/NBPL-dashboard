@@ -1,6 +1,6 @@
 """
 =============================================================================
-BioPulse: CBG Capital Planning & Operational Unit Economics Platform
+CBG Plant Operations & Capital Planning Dashboard Tool
 FILE: app.py
 PURPOSE: Executive-grade Streamlit dashboard with dark-mode theme, custom
          glassmorphism KPI cards, and fully interactive Plotly charts.
@@ -35,8 +35,8 @@ import db_engine as dbe
 # PAGE CONFIGURATION
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="BioPulse | CBG Capital & Operations Platform",
-    page_icon="⚡",
+    page_title="CBG Operations & Capital Planning Dashboard",
+    page_icon="⚙️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -369,17 +369,17 @@ def render_sidebar(data: dict) -> dict:
         # Brand header
         st.markdown("""
         <div style="text-align:center; padding: 1rem 0 1.5rem 0;">
-            <div style="font-family:'Space Grotesk',sans-serif; font-size:1.6rem;
+            <div style="font-family:'Space Grotesk',sans-serif; font-size:1.5rem;
                  font-weight:800; background:linear-gradient(135deg,#38bdf8,#c084fc);
                  -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
-                ⚡ BioPulse
+                ⚙️ CBG Analytics
             </div>
             <div style="font-size:0.7rem; color:#475569; margin-top:0.25rem;
                  letter-spacing:0.1em; text-transform:uppercase;">
-                CBG Analytics Platform
+                Operations & Capital Planning Tool
             </div>
             <div style="font-size:0.65rem; color:#334155; margin-top:0.5rem;">
-                Narmada Biofuels Pvt. Ltd. — 3.0 TPD Facility
+                Commercial 3.0 TPD Industrial Facility
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1224,10 +1224,10 @@ def main():
     if not check_database_ready():
         st.markdown("""
         <div style='text-align:center;padding:4rem 2rem;'>
-            <div style='font-family:"Space Grotesk";font-size:2.5rem;font-weight:700;
+            <div style='font-family:"Space Grotesk";font-size:2.2rem;font-weight:700;
                  background:linear-gradient(135deg,#38bdf8,#c084fc);
                  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-                 margin-bottom:1rem;'>⚡ BioPulse</div>
+                 margin-bottom:1rem;'>⚙️ CBG Operations Dashboard</div>
             <div style='color:#64748b;font-size:1rem;margin-bottom:2rem;'>
                 Database not found or empty. Run the seeder to get started.
             </div>
@@ -1249,7 +1249,7 @@ streamlit run app.py
         return
 
     # Load data
-    with st.spinner("Loading BioPulse analytics engine..."):
+    with st.spinner("Loading plant analytics engine..."):
         data = load_all_data()
 
     # Render sidebar and get filters
