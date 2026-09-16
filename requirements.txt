@@ -1,0 +1,14 @@
+# BioPulse CBG Analytics Platform — Python Dependencies
+# Python >= 3.10 required
+
+# Core data stack
+pandas==2.2.2
+numpy==1.26.4
+sqlalchemy==2.0.30
+
+# Visualization & Dashboard
+streamlit==1.35.0
+plotly==5.22.0
+
+# Utilities
+python-dateutil==2.9.0
