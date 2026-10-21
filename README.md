@@ -2,8 +2,9 @@
 
 [![Dashboard-Streamlit](https://img.shields.io/badge/Dashboard-Live%20Streamlit-FF4B4B.svg)](http://localhost:8503)
 [![SQL-ANSI%20SQLite3](https://img.shields.io/badge/SQL-Advanced%20Analytical%20Views-003B57.svg)](views.sql)
-[![Analytics-Funnel%20Decomposition](https://img.shields.io/badge/Analytics-Sequential%20Funnel%20Decomposition-indigo.svg)](README.md#3-analytical-framework-sequential-funnel-decomposition)
-[![Financials-SATAT%20Framework](https://img.shields.io/badge/Economics-SATAT%20Offtake%20Pricing-emerald.svg)](README.md#5-pricing-engine--financial-loss-decomposition)
+[![Dataset-Synthetic Operational Data](https://img.shields.io/badge/Dataset-Synthetic%20Operational%20Data-amber.svg)](#1-the-business-problem--analytical-objective)
+[![Funnel-Zero Residual Decomposition](https://img.shields.io/badge/Funnel-Zero%20Residual%20Decomposition-indigo.svg)](#3-analytical-framework-sequential-funnel-decomposition)
+[![Economics-SATAT Offtake Pricing](https://img.shields.io/badge/Economics-SATAT%20Offtake%20Pricing-emerald.svg)](#5-pricing-engine--financial-loss-decomposition)
 
 An operational analytics system that models commercial compressed biogas (CBG) manufacturing as a continuous, mass-conserving production funnel. It translates raw operational telemetry into rupee-denominated financial leakage, identifies stage-specific bottlenecks, and isolates supplier-level unit economics.
 
@@ -22,6 +23,8 @@ On most operating days, actual billed dispatch misses nameplate. When production
 Raw Material Supply ──► Moisture & Solids ──► Digester Biology ──► Purification Slip ──► Transit Delivery
    (Tonnage Deficit)      (Excess Water)        (CH4 Yield Drop)      (Tail-gas Loss)     (Metering / Pressure)
 ```
+
+> **Dataset & Simulation Notice**: This analysis is conducted entirely on **synthetic operational data** generated with calibrated Gaussian noise, probabilistic process disturbances, and real-world physical mass-balance constraints (180 feed days, 135 output days). It demonstrates production analytics, causal attribution, and SQL engineering patterns for commercial biogas facilities without disclosing proprietary plant SCADA logs or commercial contracts.
 
 ### The Analytical Challenge: Upstream Compounding
 In continuous process manufacturing, naive aggregations produce **phantom blame**. For example, if raw material feed is 20% below requirement, the biological digester will produce less methane even if the bacteria are operating at peak efficiency. Evaluating each stage in isolation double-counts losses or accuses the wrong operational owner. 
@@ -71,20 +74,23 @@ To ensure strict conservation of mass with **zero residual bucket**, the pipelin
 
 ### Funnel Walk Equations
 
-Let $N = 3,000\text{ kg/day}$ (Nameplate Capacity). The model walks through intermediate virtual yields $k_0 \to k_5$:
+Let `N = 3,000 kg/day` (Nameplate Capacity). The model walks through intermediate virtual yields `k0` through `k5`:
 
-| Stage | Efficiency Ratio | Virtual Yield ($k$) | Stage Loss Metric (kg) |
+| Stage | Efficiency Ratio | Virtual Yield (`k`) | Stage Loss Metric (kg) |
 |---|---|---|---|
-| **0. Nameplate** | Reference design | $k_0 = N$ | Base capacity |
-| **1. Supply** | $\text{qty\_ratio} = \frac{\text{Feed Received}}{\text{Plant Design Need}}$ | $k_1 = N \times \text{qty\_ratio}$ | $\text{Loss}_{\text{supply}} = k_0 - k_1$ |
-| **2. Moisture** | $\text{solids\_ratio} = \frac{\text{Dry Solids Fed}}{\text{Design Dry Solids}}$ | $k_2 = N \times \text{solids\_ratio}$ | $\text{Loss}_{\text{moisture}} = k_1 - k_2$ |
-| **3. Digester** | $\text{dig\_eff} = \frac{\text{Actual }\text{CH}_4\text{ Produced}}{\text{Expected Yield from Solids Fed}}$ | $k_3 = N \times \text{solids\_ratio} \times \text{dig\_eff}$ | $\text{Loss}_{\text{digester}} = k_2 - k_3$ |
-| **4. Purification** | $\text{pur\_eff} = \frac{1 - \text{Actual Slip}}{1 - \text{Design Slip}}$ | $k_4 = k_3 \times \text{pur\_eff} \equiv \text{CBG}_{\text{out}}$ | $\text{Loss}_{\text{purif}} = k_3 - k_4$ |
-| **5. Transit** | $\text{transit\_eff} = \frac{\text{Billed kg}}{\text{Dispatched kg}}$ | $k_5 = \text{Billed}_{\text{kg}}$ | $\text{Loss}_{\text{transit}} = k_4 - k_5$ |
+| **0. Nameplate** | Reference design capacity | `k0 = N` | Base design rating (3,000 kg) |
+| **1. Supply** | `qty_ratio = Feed Received / Plant Design Need` | `k1 = N * qty_ratio` | `Loss_supply = k0 - k1` |
+| **2. Moisture** | `solids_ratio = Dry Solids Fed / Design Dry Solids` | `k2 = N * solids_ratio` | `Loss_moisture = k1 - k2` |
+| **3. Digester** | `dig_eff = Actual CH4 Produced / Expected Solids Yield` | `k3 = N * solids_ratio * dig_eff` | `Loss_digester = k2 - k3` |
+| **4. Purification** | `pur_eff = (1 - Actual Slip) / (1 - Design Slip)` | `k4 = k3 * pur_eff` (= CBG Out) | `Loss_purif = k3 - k4` |
+| **5. Transit** | `transit_eff = Billed kg / Dispatched kg` | `k5 = Billed kg` | `Loss_transit = k4 - k5` |
 
 ### Mathematical Proof of Exhaustive Decomposition
-Because each stage loss is defined as $\text{Loss}_i = k_{i-1} - k_i$, summing the losses forms a telescoping series:
-$$\sum_{i=1}^{5} \text{Loss}_i = (k_0 - k_1) + (k_1 - k_2) + (k_2 - k_3) + (k_3 - k_4) + (k_4 - k_5) \equiv k_0 - k_5 = N - \text{Billed}_{\text{kg}}$$
+
+Because each stage loss is defined as the marginal step drop `Loss_i = k_{i-1} - k_i`, summing the losses forms a telescoping series:
+
+$$\sum_{i=1}^{5} \text{Loss}_i = (k_0 - k_1) + (k_1 - k_2) + (k_2 - k_3) + (k_3 - k_4) + (k_4 - k_5) = k_0 - k_5 = N - \text{Billed}$$
+
 The decomposition is **exhaustive by construction**: 100% of the volume gap is accounted for across the 5 process stages with zero unexplained residual.
 
 ---
@@ -150,7 +156,7 @@ CASE WHEN sl.moisture_loss_kg > 0 AND mt.total_excess > 0
      ELSE 0.0 END AS moisture_loss_rs_v
 ```
 
-### 4. Categorical Unpivoting & Ranked Pareto Distributions (`v_loss_causes`)
+### 4. Categorical Unpivoting & Ranked Distributions (`v_loss_causes`)
 Transforms columnar losses into normalized rows via `UNION ALL` to evaluate cumulative loss curves and significance filters:
 ```sql
 WITH unpivoted AS (
@@ -173,13 +179,13 @@ FROM unpivoted;
 
 Commercial contracts index revenue directly to gross calorific value (GCV), creating a variable price per kg based on delivered methane purity:
 
-$$\text{slope} = \frac{\text{GCV} \times \text{Price}_{\text{MMBTU}}}{\rho_{\text{gas}}} \times \eta_{\text{correction}} = \frac{0.0376 \times 2110}{0.717} \times 0.95 \approx ₹105.12 \text{ / kg / unit purity}$$
+$$\text{slope} = \frac{\text{GCV} \times \text{Price}_{\text{MMBTU}}}{\rho_{\text{gas}}} \times \eta_{\text{correction}} = \frac{0.0376 \times 2110}{0.717} \times 0.95 \approx \text{Rs. } 105.12 \text{ per kg per unit purity}$$
 
 $$\text{Price}(\text{purity}) = \text{slope} \times \text{purity} + \text{Compression Charge} = 105.12 \times \rho + 8.00$$
 
-* **Benchmark Tariff (@ 98% Design Purity)**: $105.12 \times 0.98 + 8.00 =$ **₹111.02 / kg**
+* **Benchmark Tariff (@ 98% Design Purity)**: `105.12 * 0.98 + 8.00 = ` **₹111.02 / kg**
 * **Financial Loss Separation**:
-  $$\text{Total Financial Loss} = \underbrace{\sum_{i=1}^{5} \text{Loss}_i \times \text{Price}_{\text{design}}}_{\text{Physical Quantity Volume Losses}} + \underbrace{\text{Billed kg} \times (\text{Price}_{\text{design}} - \text{Price}_{\text{actual}})}_{\text{Price-Realization Purity Penalties}}$$
+  $$\text{Total Financial Loss} = \sum_{i=1}^{5} (\text{Loss}_i \times \text{Price}_{\text{design}}) + \left[ \text{Billed kg} \times (\text{Price}_{\text{design}} - \text{Price}_{\text{actual}}) \right]$$
   This isolates whether cash flow drops are caused by missing volume or product quality discounts.
 
 ---
@@ -201,9 +207,9 @@ Vendor E (Agri):  ₹480 price + ₹50 freight  @ 15.5% solids ──► ₹3,41
 ```
 
 ### Supplier Scorecard Rules
-* **Reliability Score**: $\text{AVG}(\frac{\text{Actual Delivered Tonnage}}{\text{Contracted DCQ}})$.
-* **Fulfillment Failure**: Count of days where delivery was $<90\%$ of contracted volume.
-* **Top Performer**: Lowest landed cost per dry tonne among vendors meeting $\ge 95\%$ reliability.
+* **Reliability Score**: `AVG(Actual Delivered Tonnage / Contracted DCQ)`
+* **Fulfillment Failure**: Count of days where delivery was `< 90%` of contracted volume
+* **Top Performer**: Lowest landed cost per dry tonne among vendors meeting `Reliability >= 95%`
 
 ---
 
@@ -257,13 +263,7 @@ Dashboard runs locally at `http://localhost:8503` (or port assigned by Streamlit
 
 ### Quality Assurance & Validation
 `validate.py` executes **46 automated integrity checks** confirming:
-* Exhaustive mass conservation identity: $\sum \text{Stage Losses} \equiv N - \text{Billed kg}$
-* Financial balance identity: $\text{Total Rs Lost} \equiv \sum \text{Quantity Losses} + \text{Purity Penalties}$
+* Exhaustive mass conservation identity: `Sum(5 Stage Losses) == Nameplate - Billed kg`
+* Financial balance identity: `Total Rs Lost == Volume Losses + Purity Penalties`
 * Dual-window causal isolation: 0 supplier attribution mismatches across all 135 days
 * Range validations, feed consistency, and dynamic row-count assertions.
-
----
-
-## License
-
-Available under the [MIT License](LICENSE).
