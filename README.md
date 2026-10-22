@@ -1,5 +1,4 @@
-# CBG Plant Production Loss Analytics
-
+# CBG Operations & Funnel Analytics Platform 
 CBG Plant Production Loss Analytics: where a 3 TPD biogas plant lost output versus nameplate, what it cost in rupees, and which stage or vendor caused it.
 
 The data is synthetic, generated with random faults and noise for demonstration.
